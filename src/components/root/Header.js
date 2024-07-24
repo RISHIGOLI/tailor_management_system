@@ -1,7 +1,17 @@
 import { Grid, Box, Button } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import { useState } from 'react'
+import ProfileOptionsPopover from './ProfileOptionsPopover'
 
 function Header({ toggleDrawer }) {
+    const [openProfileOptionsPopover, setOpenProfileOptionsPopover] = useState(false)
+    const [anchorE1, setAnchorE1] = useState()
+
+    function handleOpenProfilePopover(e){
+        setAnchorE1(e.target)
+        setOpenProfileOptionsPopover(true)
+    }
+
     return (
         <>
             {/* main container */}
@@ -13,9 +23,12 @@ function Header({ toggleDrawer }) {
                 </Grid>
                 {/* right side container */}
                 <Grid style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <Box><Button style={{border: '1px solid black'}}>Profile</Button></Box>
+                    <Box><Button style={{border: '1px solid black'}} onClick={(e)=>handleOpenProfilePopover(e)}>Profile</Button></Box>
                 </Grid>
             </Grid>
+            {
+                openProfileOptionsPopover && <ProfileOptionsPopover open={openProfileOptionsPopover} anchorE1={anchorE1} onClose={()=>setOpenProfileOptionsPopover(false)}/>
+            }
         </>
     )
 }
