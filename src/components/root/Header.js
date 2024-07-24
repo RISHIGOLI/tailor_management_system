@@ -5,7 +5,7 @@ function Header({ toggleDrawer }) {
     return (
         <>
             {/* main container */}
-            <Grid style={{ height: '100%', width: '100%', backgroundColor: 'pink', padding: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Grid style={{ height: 'inherit', width: 'inherit', backgroundColor: 'pink', padding: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'fixed' }}>
                 {/* left side container */}
                 <Grid style={{ display: 'flex', alignItems: 'center' }}>
                     <Box><Button onClick={toggleDrawer}><MenuIcon /></Button></Box>

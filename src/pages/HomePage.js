@@ -25,14 +25,15 @@ export default function HomePage() {
                 </Grid>
 
                 {/* main content */}
-                <Grid style={{ display: 'flex', flex: 1 }}>
+                <Grid style={{ display: 'flex', height: 'calc(100vh - 4.5rem)' }}>
                     {/* drawer */}
                     <Drawer variant="persistent" anchor="left" open={drawerOpen}
                         transitionDuration={300}
                         sx={{
                             '& .MuiPaper-root': {
                                 backgroundColor: 'pink',
-                                top: '4.5rem'
+                                top: '4.5rem',
+                                height: `calc(100% - 4.5rem)`
                             }
                         }}
                     >
@@ -55,7 +56,7 @@ export default function HomePage() {
 
                     {/* content container */}
                     <Grid style={{
-                        flex: 1, backgroundColor: 'red', padding: '1rem', marginLeft: drawerOpen ? 250 : 0, transition: 'margin 0.3s',
+                        flex: 1, backgroundColor: 'red', padding: '0.5rem', marginLeft: drawerOpen ? 250 : 0, transition: 'margin 0.3s',
                     }}>
                         {/* Your content goes here */}
                         <Grid style={{ height: '100%', width: '100%'}}>
