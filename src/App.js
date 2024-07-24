@@ -5,6 +5,7 @@ import { makeStyles } from '@mui/styles'
 import VisitPage from './pages/VisitPage';
 import { useState } from 'react';
 import HomePage from './pages/HomePage';
+import Routers from './components/root/Routers';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -30,11 +31,7 @@ function App() {
   }
   return (
     <>
-      {
-        showHomePage ?
-          <HomePage /> :
-          <VisitPage verifyLogin={verifyLogin} />
-      }
+      <Routers/>
     </>
   );
 }
