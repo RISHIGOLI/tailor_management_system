@@ -1,17 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
-import { Grid} from '@mui/material'
-import { makeStyles} from '@mui/styles'
+import { Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import VisitPage from './pages/VisitPage';
+import { useState } from 'react';
+import HomePage from './pages/HomePage';
 
-const useStyles = makeStyles((theme)=>({
-  mainContainer:{
+const useStyles = makeStyles((theme) => ({
+  mainContainer: {
     height: '100vh',
     width: '100vw',
     backgroundColor: 'pink'
   },
-  mobileContainer:{
+  mobileContainer: {
     display: 'none',
-    [theme.breakpoints.down(767)]:{
+    [theme.breakpoints.down(767)]: {
       display: 'block'
     }
   }
@@ -19,10 +22,20 @@ const useStyles = makeStyles((theme)=>({
 
 function App() {
   const classes = useStyles()
+  const [showHomePage, setShowHomePage] = useState(true)
+
+  function verifyLogin(username, password) {
+    console.log(username, password);
+    setShowHomePage(true)
+  }
   return (
-    <Grid className={classes.mainContainer}>
-      <Grid className={classes.mobileContainer}>mobile container</Grid>
-    </Grid>
+    <>
+      {
+        showHomePage ?
+          <HomePage /> :
+          <VisitPage verifyLogin={verifyLogin} />
+      }
+    </>
   );
 }
 
