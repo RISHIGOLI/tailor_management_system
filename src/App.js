@@ -25,10 +25,7 @@ function App() {
   const classes = useStyles()
   const [showHomePage, setShowHomePage] = useState(true)
 
-  function verifyLogin(username, password) {
-    console.log(username, password);
-    setShowHomePage(true)
-  }
+  
   return (
     <>
       <Routers/>
