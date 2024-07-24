@@ -39,12 +39,12 @@ export default function HomePage() {
                         <Box
                             sx={{ width: 250 }}
                             role="presentation"
-                            // onClick={toggleDrawer}
-                            // onKeyDown={toggleDrawer}
+                        // onClick={toggleDrawer}
+                        // onKeyDown={toggleDrawer}
                         >
                             <List>
                                 <ListItem button onClick={() => navigate('/item1')}>
-                                    <ListItemText primary="Item 1" />
+                                    <ListItemText primary="Dashboard" />
                                 </ListItem>
                                 <ListItem button onClick={() => navigate('/item2')}>
                                     <ListItemText primary="Item 2" />
@@ -55,11 +55,10 @@ export default function HomePage() {
 
                     {/* content container */}
                     <Grid style={{
-                        flex: 1, backgroundColor: 'red', padding: '1rem', marginLeft: drawerOpen ? 250 : 0,
-                        transition: 'margin 0.3s'
+                        flex: 1, backgroundColor: 'red', padding: '1rem', marginLeft: drawerOpen ? 250 : 0, transition: 'margin 0.3s',
                     }}>
                         {/* Your content goes here */}
-                        <Grid style={{ height: '100%', width: '100%', backgroundColor: 'white' }}>
+                        <Grid style={{ height: '100%', width: '100%'}}>
                             <Outlet />
                         </Grid>
                     </Grid>
