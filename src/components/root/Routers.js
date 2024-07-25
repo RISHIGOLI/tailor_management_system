@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import HomePage from '../../pages/HomePage'
-import CustomersTab from '../user/CustomersTab'
+import CustomersTab from '../customers/CustomersTab'
 import Item1 from './temps/Item1'
 
 function Routers() {
