@@ -1,5 +1,7 @@
 import { Grid, Button, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { useState } from 'react';
+import AddCustomer from './AddCustomer';
 const useStyles = makeStyles((theme) => ({
     recordColumn: {
         display: 'flex',
@@ -30,12 +32,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomersTab() {
     const classes = useStyles()
-
+    const [openAddCustomerForm, setOpenAddCustomerForm] = useState(false)
     return (
         <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'blue', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column' }}>
             <Grid style={{ width: '100%', height: '4rem', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Grid></Grid>
-                <Grid><Button sx={{ border: '1px solid black' }}>Add Customer</Button></Grid>
+                <Grid><Button sx={{ border: '1px solid black' }} onClick={()=>setOpenAddCustomerForm(true)}>Add Customer</Button></Grid>
             </Grid>
 
             {/* customer table container*/}
@@ -51,7 +53,7 @@ export default function CustomersTab() {
                 </Grid>
                 <Grid style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                     {
-                        Array(20).fill(1).map((item,index) => (
+                        Array(20).fill(1).map((item, index) => (
                             <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={index}>
                                 <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
                                 <Box style={{ width: '10%' }} className={classes.recordColumn}>Name</Box>
@@ -65,6 +67,9 @@ export default function CustomersTab() {
                     }
                 </Grid>
             </Grid>
+            {
+                openAddCustomerForm && <AddCustomer open={openAddCustomerForm} onClose={()=>setOpenAddCustomerForm(false)}/>
+            }
         </Grid>
     );
 }
