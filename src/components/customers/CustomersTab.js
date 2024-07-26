@@ -1,7 +1,11 @@
 import { Grid, Button, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { useEffect } from 'react';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCustomers } from '../../store/logics/customer/CustomerSlice';
 import AddCustomer from './AddCustomer';
+
 const useStyles = makeStyles((theme) => ({
     recordColumn: {
         display: 'flex',
@@ -32,7 +36,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomersTab() {
     const classes = useStyles()
+    const dispatch = useDispatch()
     const [openAddCustomerForm, setOpenAddCustomerForm] = useState(false)
+
+    useEffect(()=>{
+        console.log('customers tab mounted');
+        dispatch(getAllCustomers())
+    },[])
+
     return (
         <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'blue', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column' }}>
             <Grid style={{ width: '100%', height: '4rem', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
