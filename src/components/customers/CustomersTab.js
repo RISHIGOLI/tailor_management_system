@@ -38,53 +38,63 @@ export default function CustomersTab() {
     const classes = useStyles()
     const dispatch = useDispatch()
     const [openAddCustomerForm, setOpenAddCustomerForm] = useState(false)
+    const { customers, loader } = useSelector((state) => state.customers)
+    console.log('customers', customers, loader);
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log('customers tab mounted');
         dispatch(getAllCustomers())
-    },[])
+    }, [])
 
     return (
-        <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'blue', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column' }}>
-            <Grid style={{ width: '100%', height: '4rem', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Grid></Grid>
-                <Grid><Button sx={{ border: '1px solid black' }} onClick={() => setOpenAddCustomerForm(true)}>Add Customer</Button></Grid>
-            </Grid>
-
-            {/* customer table container*/}
-            <Grid style={{ width: '100%', height: 'calc(100% - 4rem)', backgroundColor: 'pink', display: 'flex', flexDirection: 'column' }}>
-                <Grid style={{ backgroundColor: 'rgb(127, 12, 134)', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', marginRight: '4px' }}>
-                    <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
-                    <Box style={{ width: '10%' }} className={classes.column}>Name</Box>
-                    <Box style={{ width: '20%' }} className={classes.column}>Address</Box>
-                    <Box style={{ width: '15%' }} className={classes.column}>Mobile Number</Box>
-                    <Box style={{ width: '20%' }} className={classes.column}>Referred By</Box>
-                    <Box style={{ width: '10%' }} className={classes.column}>Orders</Box>
-                    <Box style={{ width: '25%', border: 'none' }} className={classes.column}>Actions</Box>
-                </Grid>
-                <Grid style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
-                    {
-                        Array(20).fill(1).map((item, index) => (
-                            <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={index}>
-                                <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
-                                <Box style={{ width: '10%' }} className={classes.recordColumn}>Name</Box>
-                                <Box style={{ width: '20%' }} className={classes.recordColumn}>Address</Box>
-                                <Box style={{ width: '15%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>Mobile Number</Box>
-                                <Box style={{ width: '20%' }} className={classes.recordColumn}>Referred By</Box>
-                                <Box style={{ width: '10%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>Orders</Box>
-                                <Box style={{ width: '25%', display: 'flex', justifyContent: 'space-evenly',  }} className={classes.recordColumn}>
-                                    <Button style={{ textTransform: 'none', border: '1px solid black' }}>View</Button>
-                                    <Button style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
-                                    <Button style={{ textTransform: 'none', border: '1px solid black' }}>Delete</Button>
-                                </Box>
-                            </Grid>
-                        ))
-                    }
-                </Grid>
-            </Grid>
+        <>
             {
-                openAddCustomerForm && <AddCustomer open={openAddCustomerForm} onClose={() => setOpenAddCustomerForm(false)} />
+                loader ?
+                    <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'pink', borderRadius: '0.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Box style={{fontSize: '2rem', fontWeight: 'bold'}}>Loading...</Box>
+                    </Grid> :
+                    <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'blue', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column' }}>
+                        <Grid style={{ width: '100%', height: '4rem', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Grid></Grid>
+                            <Grid><Button sx={{ border: '1px solid black' }} onClick={() => setOpenAddCustomerForm(true)}>Add Customer</Button></Grid>
+                        </Grid>
+
+                        {/* customer table container*/}
+                        <Grid style={{ width: '100%', height: 'calc(100% - 4rem)', backgroundColor: 'pink', display: 'flex', flexDirection: 'column' }}>
+                            <Grid style={{ backgroundColor: 'rgb(127, 12, 134)', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', marginRight: '4px' }}>
+                                <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
+                                <Box style={{ width: '10%' }} className={classes.column}>Name</Box>
+                                <Box style={{ width: '20%' }} className={classes.column}>Address</Box>
+                                <Box style={{ width: '15%' }} className={classes.column}>Mobile Number</Box>
+                                <Box style={{ width: '20%' }} className={classes.column}>Referred By</Box>
+                                <Box style={{ width: '10%' }} className={classes.column}>Orders</Box>
+                                <Box style={{ width: '25%', border: 'none' }} className={classes.column}>Actions</Box>
+                            </Grid>
+                            <Grid style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+                                {
+                                    customers.map((customer, index) => (
+                                        <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={index}>
+                                            <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
+                                            <Box style={{ width: '10%' }} className={classes.recordColumn}>{customer.customerName}</Box>
+                                            <Box style={{ width: '20%' }} className={classes.recordColumn}>{customer.customerAddress}</Box>
+                                            <Box style={{ width: '15%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{customer.customerMobileNo}</Box>
+                                            <Box style={{ width: '20%' }} className={classes.recordColumn}>{customer.referredBy}</Box>
+                                            <Box style={{ width: '10%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>Orders</Box>
+                                            <Box style={{ width: '25%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
+                                                <Button style={{ textTransform: 'none', border: '1px solid black' }}>View</Button>
+                                                <Button style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
+                                                <Button style={{ textTransform: 'none', border: '1px solid black' }}>Delete</Button>
+                                            </Box>
+                                        </Grid>
+                                    ))
+                                }
+                            </Grid>
+                        </Grid>
+                        {
+                            openAddCustomerForm && <AddCustomer open={openAddCustomerForm} onClose={() => setOpenAddCustomerForm(false)} />
+                        }
+                    </Grid>
             }
-        </Grid>
+        </>
     );
 }
