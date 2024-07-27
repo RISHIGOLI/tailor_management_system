@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCustomers } from '../../store/logics/customer/CustomerSlice';
 import AddCustomer from './AddCustomer';
+import ConfirmationDialog from './ConfirmationDialog';
 
 const useStyles = makeStyles((theme) => ({
     recordColumn: {
@@ -38,6 +39,8 @@ export default function CustomersTab() {
     const classes = useStyles()
     const dispatch = useDispatch()
     const [openAddCustomerForm, setOpenAddCustomerForm] = useState(false)
+    const [openDeleteCustomerDialog, setOpenDeleteCustomerDialog] = useState(false)
+    const [customerIdToBeDeleted, setCustomerIdToBeDeleted] = useState()
     const { customers, loader } = useSelector((state) => state.customers)
     console.log('customers', customers, loader);
 
@@ -46,12 +49,17 @@ export default function CustomersTab() {
         dispatch(getAllCustomers())
     }, [])
 
+    function handleOpenDeleteCustomerDialog(customerId) {
+        setCustomerIdToBeDeleted(customerId)
+        setOpenDeleteCustomerDialog(true)
+    }
+
     return (
         <>
             {
                 loader ?
                     <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'pink', borderRadius: '0.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <Box style={{fontSize: '2rem', fontWeight: 'bold'}}>Loading...</Box>
+                        <Box style={{ fontSize: '2rem', fontWeight: 'bold' }}>Loading...</Box>
                     </Grid> :
                     <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'blue', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column' }}>
                         <Grid style={{ width: '100%', height: '4rem', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -83,7 +91,7 @@ export default function CustomersTab() {
                                             <Box style={{ width: '25%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
                                                 <Button style={{ textTransform: 'none', border: '1px solid black' }}>View</Button>
                                                 <Button style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
-                                                <Button style={{ textTransform: 'none', border: '1px solid black' }}>Delete</Button>
+                                                <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => handleOpenDeleteCustomerDialog(customer.customerId)}>Delete</Button>
                                             </Box>
                                         </Grid>
                                     ))
@@ -92,6 +100,9 @@ export default function CustomersTab() {
                         </Grid>
                         {
                             openAddCustomerForm && <AddCustomer open={openAddCustomerForm} onClose={() => setOpenAddCustomerForm(false)} />
+                        }
+                        {
+                            openDeleteCustomerDialog && <ConfirmationDialog open={openDeleteCustomerDialog} onClose={() => setOpenDeleteCustomerDialog(false)} customerId={customerIdToBeDeleted} />
                         }
                     </Grid>
             }

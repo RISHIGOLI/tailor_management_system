@@ -8,3 +8,7 @@ export function addCustomerAPI(body){
     console.log(body);
     return instance.post('/api/customers/addCustomer',body)
 }
+
+export function deleteCustomerAPI(customerId){
+    return instance.post(`/api/customers/deleteCustomer/${customerId}`)
+}
