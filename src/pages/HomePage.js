@@ -63,6 +63,9 @@ export default function HomePage() {
                                             <ListItem button onClick={() => navigate('/customers')}>
                                                 <ListItemText primary="Customers" />
                                             </ListItem>
+                                            <ListItem button onClick={() => navigate('/measurements')}>
+                                                <ListItemText primary="Measurements" />
+                                            </ListItem>
                                         </List>
                                     </Box>
                                 </Drawer>
