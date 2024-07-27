@@ -1,5 +1,6 @@
 import { Grid, Button, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import AddMeasurements from '../../components/measurements/AddMeasurements'
 
 const useStyles = makeStyles((theme) => ({
     recordColumn: {
@@ -66,7 +67,11 @@ function MeasurementTab() {
                         }
                     </Grid>
                 </Grid>
-            </Grid></>
+                {
+                    <AddMeasurements />
+                }
+            </Grid>
+        </>
     )
 }
 
