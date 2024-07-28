@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { fetchMeasurementFieldsByTypeAPI } from './MeasurementsApi'
+import { addMeasurementAPI, fetchMeasurementFieldsByTypeAPI } from './MeasurementsApi'
 
 const MeasurementsSlice = createSlice({
     name: 'measurementsSlice',
     initialState: {
         loader: false,
         measurementFields: [],
+        measurements : [],
         error: false,
         message: ''
     },
@@ -32,6 +33,24 @@ const MeasurementsSlice = createSlice({
                     ...state,
                 }
             })
+            .addCase(addMeasurement.pending,(state,action)=>{
+                console.log('payload for pending state', action.payload);
+                return {
+                    ...state
+                }
+            })
+            .addCase(addMeasurement.fulfilled,(state,action)=>{
+                console.log('payload for fulfilled state', action.payload);
+                return {
+                    ...state
+                }
+            })
+            .addCase(addMeasurement.rejected,(state,action)=>{
+                console.log('payload for rejected state', action.payload);
+                return {
+                    ...state
+                }
+            })
     }
 })
 
@@ -45,6 +64,18 @@ export const fetchMeasurementFieldsByType = createAsyncThunk(
             const response = await fetchMeasurementFieldsByTypeAPI(type)
             return response.data
         } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const addMeasurement = createAsyncThunk(
+    'measurements/addMeasurement',
+    async ({body},thunkAPI) => {
+        try{
+            const response = await addMeasurementAPI(body)
+            return response.data
+        }catch(error){
             return thunkAPI.rejectWithValue(error)
         }
     }

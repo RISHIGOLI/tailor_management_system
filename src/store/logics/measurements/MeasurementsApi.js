@@ -1,5 +1,10 @@
 import { instance } from "../../../services/AxiosConfig";
 
-export function fetchMeasurementFieldsByTypeAPI(type){
+export function fetchMeasurementFieldsByTypeAPI(type) {
     return instance.get(`/api/measurement-types/${type}`)
+}
+
+export function addMeasurementAPI(body) {
+    console.log('body',body);
+    return instance.post('/api/measurement', body)
 }

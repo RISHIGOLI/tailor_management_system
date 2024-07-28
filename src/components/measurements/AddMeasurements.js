@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles'
 import CloseIcon from '@mui/icons-material/Close'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchMeasurementFieldsByType } from '../../store/logics/measurements/MeasurementsSlice'
+import { addMeasurement, fetchMeasurementFieldsByType } from '../../store/logics/measurements/MeasurementsSlice'
 import { fetchCustomersByCustomerName } from '../../store/logics/customer/CustomerSlice'
 
 const useStyles = makeStyles((theme) => ({
@@ -101,19 +101,13 @@ function AddMeasurements({ open, onClose }) {
 
     function addMeasurementHandler() {
         const requestBody = {
-            customer: {
-                customerId: selectedCustomer?.customerId,
-                customerName: selectedCustomer?.customerName,
-                customerAddress: selectedCustomer?.customerAddress,
-                customerMobileNo: selectedCustomer?.customerMobileNo,
-                referredBy: selectedCustomer?.referredBy
-            },
-            type: {
-                typeId: getTypeIdFromMeasurementType(measurementType)
-            },
+            customerId: selectedCustomer?.customerId,
+            typeId: getTypeIdFromMeasurementType(measurementType),
             values: transformMeasurementData(values)
         }
-        console.log('request body = ', requestBody);
+        // console.log('request body = ', requestBody);
+        console.log(transformMeasurementData(values));
+        dispatch(addMeasurement({body:requestBody}))
     }
 
     function measurementsInputHandler(e) {
@@ -215,14 +209,14 @@ function AddMeasurements({ open, onClose }) {
                             </Grid>
                             <Grid item xs={6}>
                                 <Box style={{ margin: '5px 10px' }}>
-                                    <TextField
+                                    {/* <TextField
                                         variant="outlined"
                                         label="Measurement Description"
                                         name="Measurement Description"
                                         fullWidth
                                         className={classes.textField}
                                         onChange={(e) => measurementsInputHandler(e)}
-                                    />
+                                    /> */}
                                 </Box>
                             </Grid>
                             {
