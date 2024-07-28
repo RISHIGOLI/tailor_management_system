@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import AddMeasurements from '../../components/measurements/AddMeasurements'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllMeasurements } from '../../store/logics/measurements/MeasurementsSlice'
+import ViewMeasurementsDialog from '../../components/measurements/ViewMeasurementsDialog'
 
 const useStyles = makeStyles((theme) => ({
     recordColumn: {
@@ -37,6 +38,8 @@ function MeasurementTab() {
     const classes = useStyles()
     const dispatch = useDispatch()
     const [openAddMeasurementsDialog, setOpenAddMeasurementsDialog] = useState(false)
+    const [openViewMeasurementsDialog, setOpenViewMeasurementsDialog] = useState(false)
+    const [measurementId, setMeasuremenId] = useState(0)
     const { measurements } = useSelector((state) => state.measurements)
     console.log(measurements);
     useEffect(() => {
@@ -69,13 +72,13 @@ function MeasurementTab() {
                     <Grid style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                         {
                             measurements.map((measurement, index) => (
-                                <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={index}>
+                                <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={measurement.id}>
                                     <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
                                     <Box style={{ width: '20%' }} className={classes.recordColumn}>{measurement?.customer.customerName}</Box>
                                     <Box style={{ width: '15%' }} className={classes.recordColumn}>{measurement?.type.typeName}</Box>
                                     <Box style={{ width: '30%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{extractMeasurementDescription(measurement.values, 'Measurement Description')}</Box>
                                     <Box style={{ width: '35%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
-                                        <Button style={{ textTransform: 'none', border: '1px solid black' }}>View</Button>
+                                        <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { setOpenViewMeasurementsDialog(true); setMeasuremenId(measurement.id) }}>View</Button>
                                         <Button style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
                                         <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { }}>Delete</Button>
                                     </Box>
@@ -86,6 +89,9 @@ function MeasurementTab() {
                 </Grid>
                 {
                     openAddMeasurementsDialog && <AddMeasurements open={openAddMeasurementsDialog} onClose={() => setOpenAddMeasurementsDialog(false)} />
+                }
+                {
+                    openViewMeasurementsDialog && <ViewMeasurementsDialog open={openViewMeasurementsDialog} onClose={() => setOpenViewMeasurementsDialog(false)} measurementId={measurementId} />
                 }
             </Grid>
         </>
