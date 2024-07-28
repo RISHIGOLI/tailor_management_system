@@ -12,3 +12,7 @@ export function addCustomerAPI(body){
 export function deleteCustomerAPI(customerId){
     return instance.post(`/api/customers/deleteCustomer/${customerId}`)
 }
+
+export function fetchCustomersByCustomerNameAPI(customerName){
+    return instance.get(`api/customers/getCustomerByCustomerName/${customerName}`)
+}

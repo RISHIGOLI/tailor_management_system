@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addCustomerAPI, deleteCustomerAPI, getAllCustomersAPI } from "./CustomerApi";
+import { addCustomerAPI, deleteCustomerAPI, fetchCustomersByCustomerNameAPI, getAllCustomersAPI } from "./CustomerApi";
 const initialState = {
     status: false,
     error: false,
@@ -69,12 +69,19 @@ const customerSlice = createSlice({
             console.log('fulfilled deleteCustomer API', action.payload);
             return {
                 ...state,
-                customers: state.customers.filter((customer)=>customer.customerId !== action.payload.customerId)
+                customers: state.customers.filter((customer) => customer.customerId !== action.payload.customerId)
             }
         });
-        builder.addCase(deleteCustomer.rejected,(state,action)=>{
-            console.log('delete customer rejected',action);
+        builder.addCase(deleteCustomer.rejected, (state, action) => {
+            console.log('delete customer rejected', action);
             return state
+        });
+        builder.addCase(fetchCustomersByCustomerName.fulfilled, (state, action) => {
+            console.log('payload for fulfilled state', action.payload);
+            return {
+                ...state,
+                customers: [...action.payload.data]
+            }
         })
     }
 })
@@ -116,9 +123,21 @@ export const deleteCustomer = createAsyncThunk(
         console.log('delete customer action called');
         try {
             const response = await deleteCustomerAPI(customerId);
-            return {customerId: customerId};
+            return { customerId: customerId };
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
+        }
+    }
+)
+
+export const fetchCustomersByCustomerName = createAsyncThunk(
+    'measurements/fetchCustomersByCustomerName',
+    async ({ customerName }, thunkAPI) => {
+        try {
+            const response = await fetchCustomersByCustomerNameAPI(customerName)
+            return response.data
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
         }
     }
 )

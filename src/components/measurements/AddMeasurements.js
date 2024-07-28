@@ -1,7 +1,10 @@
-import { Dialog, Grid, Divider, Box, Button, TextField } from '@mui/material'
+import { Dialog, Grid, Divider, Box, Button, TextField, Autocomplete } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import CloseIcon from '@mui/icons-material/Close'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchMeasurementFieldsByType } from '../../store/logics/measurements/MeasurementsSlice'
+import { fetchCustomersByCustomerName } from '../../store/logics/customer/CustomerSlice'
 
 const useStyles = makeStyles((theme) => ({
     dialog: {
@@ -42,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
 
 function AddMeasurements({ open, onClose }) {
     const classes = useStyles()
-    const [measurementType, setMeasurementType] = useState('')
+    const dispatch = useDispatch()
+    const [measurementType, setMeasurementType] = useState('shirt')
     const textFields = [{
         label: 'Customer Name',
         name: 'customerName'
@@ -60,6 +64,20 @@ function AddMeasurements({ open, onClose }) {
         name: 'referredBy'
     }
     ]
+
+    useEffect(() => {
+        console.log('add measurement dialog mounted');
+        dispatch(fetchMeasurementFieldsByType({ type: measurementType }))
+    }, [])
+
+    const { measurementFields } = useSelector((state) => state.measurements)
+    const { customers } = useSelector((state) => state.customers)
+    // const customers = [
+    //     { id: 1, name: 'John Doe' },
+    //     { id: 2, name: 'Jane Smith' },
+    //     // more customers
+    // ];
+
     return (
         <>
             <Dialog
@@ -79,27 +97,34 @@ function AddMeasurements({ open, onClose }) {
                     </Grid>
                     <Divider />
                     {/* content container */}
-                    <Grid style={{ height: 'calc(100% - 50px)', width: '100%', backgroundColor: 'pink', paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', paddingBottom: '0.5rem' }}>
+                    <Grid style={{ height: 'calc(100% - 50px)', width: '100%', backgroundColor: 'white', paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', paddingBottom: '0.5rem' }}>
                         <Grid container spacing={1}>
+                            <Grid item xs={12} spacing={1}>
+                                <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Customer Details :</Box>
+                            </Grid>
                             {
                                 textFields.map((textField, index) => (
                                     <Grid item xs={6}>
                                         <Box style={{ margin: '5px 10px' }}>
-                                            <TextField
-                                                variant="outlined"
-                                                label={textField.label}
-                                                name={textField.name}
-                                                fullWidth
-                                                className={classes.textField}
+                                            <Autocomplete
+                                                id="autocomplete-input"
+                                                options={customers}
+                                                getOptionLabel={(option) => option?.customerName}
+                                                // value={states.find((state) => state.name === body.stateName) || states.find((state) => state.state_code === body.stateName) || null}
+                                                onInputChange={(event, newInputValue) => {
+                                                    dispatch(fetchCustomersByCustomerName({ customerName: event.target.value }))
+                                                }}
+                                                renderInput={(params) => <TextField {...params} label={textField.label} variant="outlined" name={textField.name} />}
                                             />
                                         </Box>
                                     </Grid>
                                 ))
                             }
-                            <Grid item xs={6} display="flex" alignItems="center" justifyContent="center">
+                            <Grid item xs={6} spacing={1} display="flex" alignItems="center" justifyContent="flex-start">
+                                <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Measurement Details :</Box>
                                 <Box>Measurement Type</Box>
-                                <Button className={measurementType === 'shirt' ? classes.activeButton : classes.button} onClick={() => setMeasurementType('shirt')}>Shirt</Button>
-                                <Button className={measurementType === 'pant' ? classes.activeButton : classes.button} onClick={() => setMeasurementType('pant')}>Pant</Button>
+                                <Button className={measurementType === 'shirt' ? classes.activeButton : classes.button} onClick={() => { setMeasurementType('shirt'); dispatch(fetchMeasurementFieldsByType({ type: 'shirt' })) }}>Shirt</Button>
+                                <Button className={measurementType === 'pant' ? classes.activeButton : classes.button} onClick={() => { setMeasurementType('pant'); dispatch(fetchMeasurementFieldsByType({ type: 'pant' })) }}>Pant</Button>
                             </Grid>
                             <Grid item xs={6}>
                                 <Box style={{ margin: '5px 10px' }}>
@@ -112,10 +137,26 @@ function AddMeasurements({ open, onClose }) {
                                     />
                                 </Box>
                             </Grid>
+                            {
+                                measurementFields.map((field, index) => (
+                                    <Grid item xs={3} key={field.id}>
+                                        <Box style={{ margin: '5px 10px' }}>
+                                            <TextField
+                                                variant="outlined"
+                                                label={field.fieldName}
+                                                name={field.fieldName}
+                                                fullWidth
+                                                className={classes.textField}
+                                            />
+                                        </Box>
+                                    </Grid>
+                                ))
+                            }
+                            <Grid item xs={3} justifyContent='center' margin="auto">
+                                <Button sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => { }}>+Add</Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} justifyContent='center' margin="auto">
-                            <Button sx={{ border: '1px solid black', fontWeight: 'bold' }} onClick={() => { }}>+Add</Button>
-                        </Grid>
+
                     </Grid>
                 </Grid>
             </Dialog>
