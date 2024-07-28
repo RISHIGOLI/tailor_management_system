@@ -57,7 +57,7 @@ export default function CustomersTab() {
     return (
         <>
             {
-                loader ?
+                false ?
                     <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'pink', borderRadius: '0.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Box style={{ fontSize: '2rem', fontWeight: 'bold' }}>Loading...</Box>
                     </Grid> :

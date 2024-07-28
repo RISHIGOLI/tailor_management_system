@@ -1,7 +1,9 @@
 import { Grid, Button, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AddMeasurements from '../../components/measurements/AddMeasurements'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAllMeasurements } from '../../store/logics/measurements/MeasurementsSlice'
 
 const useStyles = makeStyles((theme) => ({
     recordColumn: {
@@ -33,7 +35,20 @@ const useStyles = makeStyles((theme) => ({
 
 function MeasurementTab() {
     const classes = useStyles()
+    const dispatch = useDispatch()
     const [openAddMeasurementsDialog, setOpenAddMeasurementsDialog] = useState(false)
+    const { measurements } = useSelector((state) => state.measurements)
+    console.log(measurements);
+    useEffect(() => {
+        console.log('measurement tab mounted');
+        dispatch(fetchAllMeasurements())
+    }, [])
+
+    function extractMeasurementDescription(values, targetFieldName) {
+        const field = values.find(value => value.fieldName === targetFieldName)
+        return field ? field.fieldValue : 'Not Available'
+    }
+
     return (
         <>
             <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'blue', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column' }}>
@@ -46,19 +61,19 @@ function MeasurementTab() {
                 <Grid style={{ width: '100%', height: 'calc(100% - 4rem)', backgroundColor: 'pink', display: 'flex', flexDirection: 'column' }}>
                     <Grid style={{ backgroundColor: 'rgb(127, 12, 134)', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', marginRight: '4px' }}>
                         <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
-                        <Box style={{ width: '20%' }} className={classes.column}>Name</Box>
-                        <Box style={{ width: '30%' }} className={classes.column}>Address</Box>
-                        <Box style={{ width: '15%' }} className={classes.column}>Mobile Number</Box>
+                        <Box style={{ width: '20%' }} className={classes.column}>Customer Name</Box>
+                        <Box style={{ width: '15%' }} className={classes.column}>Cloth Type</Box>
+                        <Box style={{ width: '30%' }} className={classes.column}>Description</Box>
                         <Box style={{ width: '35%', border: 'none' }} className={classes.column}>Actions</Box>
                     </Grid>
                     <Grid style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                         {
-                            Array(10).fill(1).map((customer, index) => (
+                            measurements.map((measurement, index) => (
                                 <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={index}>
                                     <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
-                                    <Box style={{ width: '20%' }} className={classes.recordColumn}>{'customerName'}</Box>
-                                    <Box style={{ width: '30%' }} className={classes.recordColumn}>{'customerAddress'}</Box>
-                                    <Box style={{ width: '15%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{'customerMobileNo'}</Box>
+                                    <Box style={{ width: '20%' }} className={classes.recordColumn}>{measurement?.customer.customerName}</Box>
+                                    <Box style={{ width: '15%' }} className={classes.recordColumn}>{measurement?.type.typeName}</Box>
+                                    <Box style={{ width: '30%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{extractMeasurementDescription(measurement.values, 'Measurement Description')}</Box>
                                     <Box style={{ width: '35%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
                                         <Button style={{ textTransform: 'none', border: '1px solid black' }}>View</Button>
                                         <Button style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
@@ -70,7 +85,7 @@ function MeasurementTab() {
                     </Grid>
                 </Grid>
                 {
-                    openAddMeasurementsDialog && <AddMeasurements open={openAddMeasurementsDialog} onClose={()=>setOpenAddMeasurementsDialog(false)}/>
+                    openAddMeasurementsDialog && <AddMeasurements open={openAddMeasurementsDialog} onClose={() => setOpenAddMeasurementsDialog(false)} />
                 }
             </Grid>
         </>

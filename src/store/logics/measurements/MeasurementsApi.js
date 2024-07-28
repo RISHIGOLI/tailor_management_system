@@ -5,6 +5,10 @@ export function fetchMeasurementFieldsByTypeAPI(type) {
 }
 
 export function addMeasurementAPI(body) {
-    console.log('body',body);
+    console.log('body', body);
     return instance.post('/api/measurement', body)
+}
+
+export function fetchAllMeasurementsAPI() {
+    return instance.get('/api/measurement')
 }
