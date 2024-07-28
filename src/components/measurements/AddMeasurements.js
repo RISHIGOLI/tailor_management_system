@@ -47,6 +47,9 @@ function AddMeasurements({ open, onClose }) {
     const classes = useStyles()
     const dispatch = useDispatch()
     const [measurementType, setMeasurementType] = useState('shirt')
+    const [selectedCustomer, setSelectedCustomer] = useState()
+    const [inputValue, setInputValue] = useState('')
+    const [values, setValues] = useState({})
     const textFields = [{
         label: 'Customer Name',
         name: 'customerName'
@@ -72,11 +75,62 @@ function AddMeasurements({ open, onClose }) {
 
     const { measurementFields } = useSelector((state) => state.measurements)
     const { customers } = useSelector((state) => state.customers)
-    // const customers = [
-    //     { id: 1, name: 'John Doe' },
-    //     { id: 2, name: 'Jane Smith' },
-    //     // more customers
-    // ];
+
+    const handleCustomerSelect = (event, newValue) => {
+        setSelectedCustomer(newValue);
+        // setInputValue(newValue?.customerName || '');
+    };
+
+    const handleInputChange = (event, newInputValue) => {
+        setInputValue(newInputValue);
+        if (event && event.type === 'change') {
+            dispatch(fetchCustomersByCustomerName({ customerName: newInputValue }));
+        }
+    };
+
+    function getTypeIdFromMeasurementType(measurementType) {
+        switch (measurementType) {
+            case 'shirt':
+                return 2
+            case 'pant':
+                return 3
+            default:
+                return 2
+        }
+    }
+
+    function addMeasurementHandler() {
+        const requestBody = {
+            customer: {
+                customerId: selectedCustomer?.customerId,
+                customerName: selectedCustomer?.customerName,
+                customerAddress: selectedCustomer?.customerAddress,
+                customerMobileNo: selectedCustomer?.customerMobileNo,
+                referredBy: selectedCustomer?.referredBy
+            },
+            type: {
+                typeId: getTypeIdFromMeasurementType(measurementType)
+            },
+            values: transformMeasurementData(values)
+        }
+        console.log('request body = ', requestBody);
+    }
+
+    function measurementsInputHandler(e) {
+        console.log('event name = ', e.target.name, 'event value = ', e.target.value);
+        setValues({ ...values, [e.target.name]: e.target.value })
+    }
+
+    function transformMeasurementData(data) {
+        return Object.keys(data).map(key => ({
+            fieldName: key,
+            fieldValue: data[key]
+        }))
+    }
+
+    useEffect(() => {
+        console.log(values)
+    }, [values])
 
     return (
         <>
@@ -102,24 +156,57 @@ function AddMeasurements({ open, onClose }) {
                             <Grid item xs={12} spacing={1}>
                                 <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Customer Details :</Box>
                             </Grid>
-                            {
-                                textFields.map((textField, index) => (
-                                    <Grid item xs={6}>
-                                        <Box style={{ margin: '5px 10px' }}>
-                                            <Autocomplete
-                                                id="autocomplete-input"
-                                                options={customers}
-                                                getOptionLabel={(option) => option?.customerName}
-                                                // value={states.find((state) => state.name === body.stateName) || states.find((state) => state.state_code === body.stateName) || null}
-                                                onInputChange={(event, newInputValue) => {
-                                                    dispatch(fetchCustomersByCustomerName({ customerName: event.target.value }))
-                                                }}
-                                                renderInput={(params) => <TextField {...params} label={textField.label} variant="outlined" name={textField.name} />}
-                                            />
-                                        </Box>
-                                    </Grid>
-                                ))
-                            }
+
+                            <Grid item xs={6}>
+                                <Box style={{ margin: '5px 10px' }}>
+                                    <Autocomplete
+                                        id="autocomplete-input"
+                                        options={customers}
+                                        getOptionLabel={(option) => option?.customerName || ''}
+                                        value={selectedCustomer?.customerName}
+                                        onChange={handleCustomerSelect}
+                                        onInputChange={handleInputChange}
+                                        renderInput={(params) => <TextField {...params} label='Customer Name' variant="outlined" name='customerName' />}
+                                    />
+                                </Box>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Box style={{ margin: '5px 10px' }}>
+                                    <TextField
+                                        label='Customer Mobile No'
+                                        variant="outlined"
+                                        fullWidth
+                                        value={selectedCustomer?.customerMobileNo || ''}
+                                    // onChange={handleDetailChange('customerMobileNo')}
+                                    />
+                                </Box>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Box style={{ margin: '5px 10px' }}>
+                                    <TextField
+                                        label='Customer Address'
+                                        variant="outlined"
+                                        fullWidth
+                                        value={selectedCustomer?.customerAddress || ''}
+                                    // onChange={handleDetailChange('customerAddress')}
+                                    />
+                                </Box>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Box style={{ margin: '5px 10px' }}>
+                                    <TextField
+                                        label='Referred By'
+                                        variant="outlined"
+                                        fullWidth
+                                        value={selectedCustomer?.referredBy || ''}
+                                    // onChange={handleDetailChange('referredBy')}
+                                    />
+                                </Box>
+                            </Grid>
+
                             <Grid item xs={6} spacing={1} display="flex" alignItems="center" justifyContent="flex-start">
                                 <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Measurement Details :</Box>
                                 <Box>Measurement Type</Box>
@@ -131,9 +218,10 @@ function AddMeasurements({ open, onClose }) {
                                     <TextField
                                         variant="outlined"
                                         label="Measurement Description"
-                                        name="measurementDesc"
+                                        name="Measurement Description"
                                         fullWidth
                                         className={classes.textField}
+                                        onChange={(e) => measurementsInputHandler(e)}
                                     />
                                 </Box>
                             </Grid>
@@ -147,13 +235,14 @@ function AddMeasurements({ open, onClose }) {
                                                 name={field.fieldName}
                                                 fullWidth
                                                 className={classes.textField}
+                                                onChange={(e) => measurementsInputHandler(e)}
                                             />
                                         </Box>
                                     </Grid>
                                 ))
                             }
                             <Grid item xs={3} justifyContent='center' margin="auto">
-                                <Button sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => { }}>+Add</Button>
+                                <Button sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => addMeasurementHandler()}>+Add</Button>
                             </Grid>
                         </Grid>
 

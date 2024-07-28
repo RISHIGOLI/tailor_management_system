@@ -1,5 +1,6 @@
 import { Grid, Button, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { useState } from 'react'
 import AddMeasurements from '../../components/measurements/AddMeasurements'
 
 const useStyles = makeStyles((theme) => ({
@@ -32,12 +33,13 @@ const useStyles = makeStyles((theme) => ({
 
 function MeasurementTab() {
     const classes = useStyles()
+    const [openAddMeasurementsDialog, setOpenAddMeasurementsDialog] = useState(false)
     return (
         <>
             <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'blue', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column' }}>
                 <Grid style={{ width: '100%', height: '4rem', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Grid></Grid>
-                    <Grid><Button sx={{ border: '1px solid black' }} onClick={() => { }}>Add Measurements</Button></Grid>
+                    <Grid><Button sx={{ border: '1px solid black' }} onClick={() => setOpenAddMeasurementsDialog(true)}>Add Measurements</Button></Grid>
                 </Grid>
 
                 {/* customer table container*/}
@@ -68,7 +70,7 @@ function MeasurementTab() {
                     </Grid>
                 </Grid>
                 {
-                    <AddMeasurements />
+                    openAddMeasurementsDialog && <AddMeasurements open={openAddMeasurementsDialog} onClose={()=>setOpenAddMeasurementsDialog(false)}/>
                 }
             </Grid>
         </>
