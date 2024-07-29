@@ -79,34 +79,42 @@ export default function CustomersTab() {
 
                         {/* customer table container*/}
                         <Grid style={{ width: '100%', height: 'calc(100% - 4rem)', backgroundColor: 'white', display: 'flex', flexDirection: 'column', padding: '0rem 0.25rem' }}>
-                            <Grid style={{ backgroundColor: 'gray', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', paddingRight: '4px' }}>
-                                <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
-                                <Box style={{ width: '10%' }} className={classes.column}>Name</Box>
-                                <Box style={{ width: '20%' }} className={classes.column}>Address</Box>
-                                <Box style={{ width: '15%' }} className={classes.column}>Mobile Number</Box>
-                                <Box style={{ width: '20%' }} className={classes.column}>Referred By</Box>
-                                <Box style={{ width: '10%' }} className={classes.column}>Orders</Box>
-                                <Box style={{ width: '25%', border: 'none' }} className={classes.column}>Actions</Box>
-                            </Grid>
-                            <Grid style={{ height: '100%', width: '100%', overflowY: 'auto', border: '1px solid gray' }}>
-                                {
-                                    customers.map((customer, index) => (
-                                        <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={index}>
-                                            <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
-                                            <Box style={{ width: '10%' }} className={classes.recordColumn}>{customer.customerName}</Box>
-                                            <Box style={{ width: '20%' }} className={classes.recordColumn}>{customer.customerAddress}</Box>
-                                            <Box style={{ width: '15%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{customer.customerMobileNo}</Box>
-                                            <Box style={{ width: '20%' }} className={classes.recordColumn}>{customer.referredBy}</Box>
-                                            <Box style={{ width: '10%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>Orders</Box>
-                                            <Box style={{ width: '25%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
-                                                <Button style={{ textTransform: 'none', border: '1px solid black' }} className={classes.activeButton}>View</Button>
-                                                <Button style={{ textTransform: 'none', border: '1px solid black' }} className={classes.activeButton}>Edit</Button>
-                                                <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => handleOpenDeleteCustomerDialog(customer.customerId)} className={classes.activeButton}>Delete</Button>
-                                            </Box>
+                            {
+                                customers === null || customers.length === 0 ?
+                                    <Grid style={{ height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                        <Box style={{marginTop: '-4rem', fontSize: '30px', fontWeight: 'bold', color: 'gray'}}>No Customers Available</Box>
+                                    </Grid> :
+                                    <>
+                                        <Grid style={{ backgroundColor: 'gray', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', paddingRight: '4px' }}>
+                                            <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
+                                            <Box style={{ width: '10%' }} className={classes.column}>Name</Box>
+                                            <Box style={{ width: '20%' }} className={classes.column}>Address</Box>
+                                            <Box style={{ width: '15%' }} className={classes.column}>Mobile Number</Box>
+                                            <Box style={{ width: '20%' }} className={classes.column}>Referred By</Box>
+                                            <Box style={{ width: '10%' }} className={classes.column}>Orders</Box>
+                                            <Box style={{ width: '25%', border: 'none' }} className={classes.column}>Actions</Box>
                                         </Grid>
-                                    ))
-                                }
-                            </Grid>
+                                        <Grid style={{ height: '100%', width: '100%', overflowY: 'auto', border: '1px solid gray' }}>
+                                            {
+                                                customers?.map((customer, index) => (
+                                                    <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={index}>
+                                                        <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
+                                                        <Box style={{ width: '10%' }} className={classes.recordColumn}>{customer.customerName}</Box>
+                                                        <Box style={{ width: '20%' }} className={classes.recordColumn}>{customer.customerAddress}</Box>
+                                                        <Box style={{ width: '15%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{customer.customerMobileNo}</Box>
+                                                        <Box style={{ width: '20%' }} className={classes.recordColumn}>{customer.referredBy}</Box>
+                                                        <Box style={{ width: '10%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>Orders</Box>
+                                                        <Box style={{ width: '25%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
+                                                            <Button style={{ textTransform: 'none', border: '1px solid black' }} className={classes.activeButton}>View</Button>
+                                                            <Button style={{ textTransform: 'none', border: '1px solid black' }} className={classes.activeButton}>Edit</Button>
+                                                            <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => handleOpenDeleteCustomerDialog(customer.customerId)} className={classes.activeButton}>Delete</Button>
+                                                        </Box>
+                                                    </Grid>
+                                                ))
+                                            }
+                                        </Grid>
+                                    </>
+                            }
                         </Grid>
                         {
                             openAddCustomerForm && <AddCustomer open={openAddCustomerForm} onClose={() => setOpenAddCustomerForm(false)} />

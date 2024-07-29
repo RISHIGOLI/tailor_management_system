@@ -101,7 +101,7 @@ function MeasurementTab() {
                         selectedCustomer &&
                         <Grid item xs={4}>
                             <Grid display="flex" alignItems="center">
-                                <Box style={{marginRight: '5px'}}>Showing result for</Box>
+                                <Box style={{ marginRight: '5px' }}>Showing result for</Box>
                                 <Box style={{ fontSize: '20px', fontWeight: 'bold', marginLeft: '0.25rem' }}>{selectedCustomer?.customerName}</Box>
                             </Grid>
                         </Grid>
@@ -110,31 +110,39 @@ function MeasurementTab() {
                 </Grid>
 
                 {/* customer table container*/}
-                <Grid style={{ width: '100%', height: 'calc(100% - 4.5rem)', backgroundColor: 'white', display: 'flex', flexDirection: 'column',padding: '0rem 0.25rem' }}>
-                    <Grid style={{ backgroundColor: 'gray', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky',paddingRight: '4px'}}>
-                        <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
-                        <Box style={{ width: '20%' }} className={classes.column}>Customer Name</Box>
-                        <Box style={{ width: '15%' }} className={classes.column}>Cloth Type</Box>
-                        <Box style={{ width: '30%' }} className={classes.column}>Description</Box>
-                        <Box style={{ width: '35%', border: 'none' }} className={classes.column}>Actions</Box>
-                    </Grid>
-                    <Grid style={{ height: '100%', width: '100%', overflowY: 'auto', border: '1px solid gray', borderBottom: '1px solid gray' }}>
-                        {
-                            measurements.map((measurement, index) => (
-                                <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={measurement.id}>
-                                    <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
-                                    <Box style={{ width: '20%' }} className={classes.recordColumn}>{measurement?.customer.customerName}</Box>
-                                    <Box style={{ width: '15%' }} className={classes.recordColumn}>{measurement?.type.typeName}</Box>
-                                    <Box style={{ width: '30%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{extractMeasurementDescription(measurement.values, 'Measurement Description')}</Box>
-                                    <Box style={{ width: '35%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
-                                        <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { setOpenViewMeasurementsDialog(true); setMeasuremenId(measurement.id) }}>View</Button>
-                                        <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
-                                        <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { }}>Delete</Button>
-                                    </Box>
+                <Grid style={{ width: '100%', height: 'calc(100% - 4.5rem)', backgroundColor: 'white', display: 'flex', flexDirection: 'column', padding: '0rem 0.25rem' }}>
+                    {
+                        measurements === null || measurements.length === 0 ?
+                            <Grid style={{ height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Box style={{ marginTop: '-4rem', fontSize: '30px', fontWeight: 'bold', color: 'gray' }}>No Measurements Available</Box>
+                            </Grid> :
+                            <>
+                                <Grid style={{ backgroundColor: 'gray', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', paddingRight: '4px' }}>
+                                    <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
+                                    <Box style={{ width: '20%' }} className={classes.column}>Customer Name</Box>
+                                    <Box style={{ width: '15%' }} className={classes.column}>Cloth Type</Box>
+                                    <Box style={{ width: '30%' }} className={classes.column}>Description</Box>
+                                    <Box style={{ width: '35%', border: 'none' }} className={classes.column}>Actions</Box>
                                 </Grid>
-                            ))
-                        }
-                    </Grid>
+                                <Grid style={{ height: '100%', width: '100%', overflowY: 'auto', border: '1px solid gray', borderBottom: '1px solid gray' }}>
+                                    {
+                                        measurements.map((measurement, index) => (
+                                            <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={measurement.id}>
+                                                <Box style={{ width: '5%' }} className={classes.recordColumn}>{index + 1}</Box>
+                                                <Box style={{ width: '20%' }} className={classes.recordColumn}>{measurement?.customer.customerName}</Box>
+                                                <Box style={{ width: '15%' }} className={classes.recordColumn}>{measurement?.type.typeName}</Box>
+                                                <Box style={{ width: '30%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{extractMeasurementDescription(measurement.values, 'Measurement Description')}</Box>
+                                                <Box style={{ width: '35%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
+                                                    <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { setOpenViewMeasurementsDialog(true); setMeasuremenId(measurement.id) }}>View</Button>
+                                                    <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
+                                                    <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { }}>Delete</Button>
+                                                </Box>
+                                            </Grid>
+                                        ))
+                                    }
+                                </Grid>
+                            </>
+                    }
                 </Grid>
                 {
                     openAddMeasurementsDialog && <AddMeasurements open={openAddMeasurementsDialog} onClose={() => setOpenAddMeasurementsDialog(false)} />
