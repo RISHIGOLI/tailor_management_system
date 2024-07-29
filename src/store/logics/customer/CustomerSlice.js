@@ -5,7 +5,13 @@ const initialState = {
     error: false,
     message: '',
     loader: 'false',
-    customers: []
+    customers: [],
+    addCustomerStatusHandlers: {
+        loader: false,
+        status: false,
+        message: '',
+        error: false
+    }
 }
 
 const customerSlice = createSlice({
@@ -42,7 +48,9 @@ const customerSlice = createSlice({
             console.log('pending', action.payload);
             return {
                 ...state,
-                // loader: true
+                addCustomerStatusHandlers: {
+                    loader: true
+                }
             }
         });
         builder.addCase(addCustomer.fulfilled, (state, action) => {
@@ -50,13 +58,23 @@ const customerSlice = createSlice({
             return {
                 ...state,
                 customers: state.customers.length > 0 && [...action.payload.data, ...state.customers],
-                // loader: false
+                addCustomerStatusHandlers: {
+                    loader: false,
+                    message: action.payload.message,
+                    status: true,
+                    error: false
+                }
             }
         });
         builder.addCase(addCustomer.rejected, (state, action) => {
             console.log('rejected', action.payload);
             return {
-                ...state
+                ...state,
+                addCustomerStatusHandlers: {
+                    loader: false,
+                    status: false,
+                    error: true,
+                }
             }
         });
         builder.addCase(deleteCustomer.pending, (state, action) => {

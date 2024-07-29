@@ -35,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
 function AddCustomer({ open, onClose }) {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const { status, loader, error, message } = useSelector((state) => state.customers.addCustomerStatusHandlers)
+    const [showForm, setShowForm] = useState(false)
     const [body, setBody] = useState({
         customerName: '',
         customerAddress: '',
@@ -64,11 +66,12 @@ function AddCustomer({ open, onClose }) {
     }
 
     useEffect(() => {
-        console.log('body', body);
-    }, [body])
+        setShowForm(true)
+    }, [])
 
     function handleAddCustomer() {
         dispatch(addCustomer({ body }))
+        setShowForm(false)
     }
 
     return (
@@ -91,28 +94,49 @@ function AddCustomer({ open, onClose }) {
                     <Divider />
                     {/* content container */}
                     <Grid style={{ height: 'calc(100% - 50px)', width: '100%', backgroundColor: 'white', paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', paddingBottom: '0.5rem' }}>
-                        <Grid container spacing={1}>
-                            {
-                                textFields.map((textField, index) => (
-                                    <Grid item xs={12}>
-                                        <Box style={{ margin: '5px 10px' }}>
-                                            <TextField
-                                                variant="outlined"
-                                                label={textField.label}
-                                                name={textField.name}
-                                                fullWidth
-                                                className={classes.textField}
-                                                value={body[textField.name]}
-                                                onChange={handleInputChange}
-                                            />
-                                        </Box>
-                                    </Grid>
-                                ))
-                            }
-                            <Grid item xs={12} container justifyContent='center'>
-                                <Button className={classes.activeButton} sx={{ border: '1px solid black' }} onClick={() => handleAddCustomer()}>+Add</Button>
+                        {
+                            !loader && showForm &&
+                            <Grid container spacing={1}>
+                                {
+                                    textFields.map((textField, index) => (
+                                        <Grid item xs={12}>
+                                            <Box style={{ margin: '5px 10px' }}>
+                                                <TextField
+                                                    variant="outlined"
+                                                    label={textField.label}
+                                                    name={textField.name}
+                                                    fullWidth
+                                                    className={classes.textField}
+                                                    value={body[textField.name]}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </Box>
+                                        </Grid>
+                                    ))
+                                }
+                                <Grid item xs={12} container justifyContent='center'>
+                                    <Button className={classes.activeButton} sx={{ border: '1px solid black' }} onClick={() => handleAddCustomer()}>+Add</Button>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        }
+
+                        {
+                            loader &&
+                            <Grid container spacing={0} height="50vh" display="flex" justifyContent="center" alignItems="center" opacity="0.1" position="aboslute" top="0" left="0">
+                                <Grid>
+                                    Loading...
+                                </Grid>
+                            </Grid>
+                        }
+
+                        {
+                            status && !showForm &&
+                            <Grid container spacing={0} height="50vh" display="flex" justifyContent="center" alignItems="center" opacity="0.1" position="aboslute" top="0" left="0">
+                                <Grid>
+                                    Customer Added Successfully.
+                                </Grid>
+                            </Grid>
+                        }
                     </Grid>
                 </Grid>
             </Dialog>
