@@ -50,6 +50,7 @@ function AddMeasurements({ open, onClose }) {
     const [selectedCustomer, setSelectedCustomer] = useState()
     const [inputValue, setInputValue] = useState('')
     const [values, setValues] = useState({})
+    const [showForm, setShowForm] = useState(false)
     const textFields = [{
         label: 'Customer Name',
         name: 'customerName'
@@ -69,12 +70,14 @@ function AddMeasurements({ open, onClose }) {
     ]
 
     useEffect(() => {
+        setShowForm(true)
         console.log('add measurement dialog mounted');
         dispatch(fetchMeasurementFieldsByType({ type: measurementType }))
     }, [])
 
     const { measurementFields } = useSelector((state) => state.measurements)
     const { customers } = useSelector((state) => state.customers)
+    const {loader,status,error,message} = useSelector((state)=>state.measurements.addMeasurementStatusHandlers)
 
     const handleCustomerSelect = (event, newValue) => {
         setSelectedCustomer(newValue);
@@ -107,7 +110,8 @@ function AddMeasurements({ open, onClose }) {
         }
         // console.log('request body = ', requestBody);
         console.log(transformMeasurementData(values));
-        dispatch(addMeasurement({body:requestBody}))
+        dispatch(addMeasurement({ body: requestBody }))
+        setShowForm(false)
     }
 
     function measurementsInputHandler(e) {
@@ -146,70 +150,72 @@ function AddMeasurements({ open, onClose }) {
                     <Divider />
                     {/* content container */}
                     <Grid style={{ height: 'calc(100% - 50px)', width: '100%', backgroundColor: 'white', paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', paddingBottom: '0.5rem' }}>
-                        <Grid container spacing={0}>
-                            <Grid item xs={12} spacing={1}>
-                                <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Customer Details :</Box>
-                            </Grid>
+                        {
+                            !loader && showForm &&
+                            <Grid container spacing={0}>
+                                <Grid item xs={12} spacing={1}>
+                                    <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Customer Details :</Box>
+                                </Grid>
 
-                            <Grid item xs={6}>
-                                <Box style={{ margin: '5px 10px' }}>
-                                    <Autocomplete
-                                        id="autocomplete-input"
-                                        options={customers}
-                                        getOptionLabel={(option) => option?.customerName || ''}
-                                        value={selectedCustomer?.customerName}
-                                        onChange={handleCustomerSelect}
-                                        onInputChange={handleInputChange}
-                                        renderInput={(params) => <TextField {...params} label='Customer Name' variant="outlined" name='customerName' />}
-                                    />
-                                </Box>
-                            </Grid>
+                                <Grid item xs={6}>
+                                    <Box style={{ margin: '5px 10px' }}>
+                                        <Autocomplete
+                                            id="autocomplete-input"
+                                            options={customers}
+                                            getOptionLabel={(option) => option?.customerName || ''}
+                                            value={selectedCustomer?.customerName}
+                                            onChange={handleCustomerSelect}
+                                            onInputChange={handleInputChange}
+                                            renderInput={(params) => <TextField {...params} label='Customer Name' variant="outlined" name='customerName' />}
+                                        />
+                                    </Box>
+                                </Grid>
 
-                            <Grid item xs={6}>
-                                <Box style={{ margin: '5px 10px' }}>
-                                    <TextField
-                                        label='Customer Mobile No'
-                                        variant="outlined"
-                                        fullWidth
-                                        value={selectedCustomer?.customerMobileNo || ''}
-                                    // onChange={handleDetailChange('customerMobileNo')}
-                                    />
-                                </Box>
-                            </Grid>
+                                <Grid item xs={6}>
+                                    <Box style={{ margin: '5px 10px' }}>
+                                        <TextField
+                                            label='Customer Mobile No'
+                                            variant="outlined"
+                                            fullWidth
+                                            value={selectedCustomer?.customerMobileNo || ''}
+                                        // onChange={handleDetailChange('customerMobileNo')}
+                                        />
+                                    </Box>
+                                </Grid>
 
-                            <Grid item xs={6}>
-                                <Box style={{ margin: '5px 10px' }}>
-                                    <TextField
-                                        label='Customer Address'
-                                        variant="outlined"
-                                        fullWidth
-                                        value={selectedCustomer?.customerAddress || ''}
-                                    // onChange={handleDetailChange('customerAddress')}
-                                    />
-                                </Box>
-                            </Grid>
+                                <Grid item xs={6}>
+                                    <Box style={{ margin: '5px 10px' }}>
+                                        <TextField
+                                            label='Customer Address'
+                                            variant="outlined"
+                                            fullWidth
+                                            value={selectedCustomer?.customerAddress || ''}
+                                        // onChange={handleDetailChange('customerAddress')}
+                                        />
+                                    </Box>
+                                </Grid>
 
-                            <Grid item xs={6}>
-                                <Box style={{ margin: '5px 10px' }}>
-                                    <TextField
-                                        label='Referred By'
-                                        variant="outlined"
-                                        fullWidth
-                                        value={selectedCustomer?.referredBy || ''}
-                                    // onChange={handleDetailChange('referredBy')}
-                                    />
-                                </Box>
-                            </Grid>
+                                <Grid item xs={6}>
+                                    <Box style={{ margin: '5px 10px' }}>
+                                        <TextField
+                                            label='Referred By'
+                                            variant="outlined"
+                                            fullWidth
+                                            value={selectedCustomer?.referredBy || ''}
+                                        // onChange={handleDetailChange('referredBy')}
+                                        />
+                                    </Box>
+                                </Grid>
 
-                            <Grid item xs={6} spacing={1} display="flex" alignItems="center" justifyContent="flex-start">
-                                <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Measurement Details :</Box>
-                                <Box>Measurement Type</Box>
-                                <Button className={measurementType === 'shirt' ? classes.activeButton : classes.button} onClick={() => { setMeasurementType('shirt'); dispatch(fetchMeasurementFieldsByType({ type: 'shirt' })) }}>Shirt</Button>
-                                <Button className={measurementType === 'pant' ? classes.activeButton : classes.button} onClick={() => { setMeasurementType('pant'); dispatch(fetchMeasurementFieldsByType({ type: 'pant' })) }}>Pant</Button>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Box style={{ margin: '5px 10px' }}>
-                                    {/* <TextField
+                                <Grid item xs={6} spacing={1} display="flex" alignItems="center" justifyContent="flex-start">
+                                    <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Measurement Details :</Box>
+                                    <Box>Measurement Type</Box>
+                                    <Button className={measurementType === 'shirt' ? classes.activeButton : classes.button} onClick={() => { setMeasurementType('shirt'); dispatch(fetchMeasurementFieldsByType({ type: 'shirt' })) }}>Shirt</Button>
+                                    <Button className={measurementType === 'pant' ? classes.activeButton : classes.button} onClick={() => { setMeasurementType('pant'); dispatch(fetchMeasurementFieldsByType({ type: 'pant' })) }}>Pant</Button>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Box style={{ margin: '5px 10px' }}>
+                                        {/* <TextField
                                         variant="outlined"
                                         label="Measurement Description"
                                         name="Measurement Description"
@@ -217,29 +223,47 @@ function AddMeasurements({ open, onClose }) {
                                         className={classes.textField}
                                         onChange={(e) => measurementsInputHandler(e)}
                                     /> */}
-                                </Box>
+                                    </Box>
+                                </Grid>
+                                {
+                                    measurementFields.map((field, index) => (
+                                        <Grid item xs={3} key={field.id}>
+                                            <Box style={{ margin: '5px 10px' }}>
+                                                <TextField
+                                                    variant="outlined"
+                                                    label={field.fieldName}
+                                                    name={field.fieldName}
+                                                    fullWidth
+                                                    className={classes.textField}
+                                                    onChange={(e) => measurementsInputHandler(e)}
+                                                />
+                                            </Box>
+                                        </Grid>
+                                    ))
+                                }
+                                <Grid item xs={3} justifyContent='center' margin="auto">
+                                    <Button className={classes.activeButton} sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => addMeasurementHandler()}>+Add</Button>
+                                </Grid>
                             </Grid>
-                            {
-                                measurementFields.map((field, index) => (
-                                    <Grid item xs={3} key={field.id}>
-                                        <Box style={{ margin: '5px 10px' }}>
-                                            <TextField
-                                                variant="outlined"
-                                                label={field.fieldName}
-                                                name={field.fieldName}
-                                                fullWidth
-                                                className={classes.textField}
-                                                onChange={(e) => measurementsInputHandler(e)}
-                                            />
-                                        </Box>
-                                    </Grid>
-                                ))
-                            }
-                            <Grid item xs={3} justifyContent='center' margin="auto">
-                                <Button className={classes.activeButton} sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => addMeasurementHandler()}>+Add</Button>
-                            </Grid>
-                        </Grid>
+                        }
 
+{
+                            loader &&
+                            <Grid container spacing={0} height="100%" display="flex" justifyContent="center" alignItems="center" opacity="0.1" position="aboslute" top="0" left="0">
+                                <Grid>
+                                    Loading...
+                                </Grid>
+                            </Grid>
+                        }
+
+                        {
+                            status && !showForm &&
+                            <Grid container spacing={0} height="100%" display="flex" justifyContent="center" alignItems="center" opacity="0.1" position="aboslute" top="0" left="0">
+                                <Grid>
+                                    <h2>{message}</h2>
+                                </Grid>
+                            </Grid>
+                        }
                     </Grid>
                 </Grid>
             </Dialog>

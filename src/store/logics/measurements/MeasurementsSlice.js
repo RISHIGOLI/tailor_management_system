@@ -8,7 +8,13 @@ const MeasurementsSlice = createSlice({
         measurementFields: [],
         measurements: [],
         error: false,
-        message: ''
+        message: '',
+        addMeasurementStatusHandlers: {
+            loader: false,
+            status: false,
+            error: false,
+            messsage: ''
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -36,19 +42,31 @@ const MeasurementsSlice = createSlice({
             .addCase(addMeasurement.pending, (state, action) => {
                 console.log('payload for pending state', action.payload);
                 return {
-                    ...state
+                    ...state,
+                    addMeasurementStatusHandlers: {
+                        loader: true,
+                    }
                 }
             })
             .addCase(addMeasurement.fulfilled, (state, action) => {
                 console.log('payload for fulfilled state', action.payload);
                 return {
-                    ...state
+                    ...state,
+                    measurements: [...action.payload.data, ...state.measurements],
+                    addMeasurementStatusHandlers:{
+                        loader:false,
+                        status:true,
+                        error:false,
+                        message:action.payload.message
+                    }
                 }
             })
             .addCase(addMeasurement.rejected, (state, action) => {
                 console.log('payload for rejected state', action.payload);
                 return {
-                    ...state
+                    ...state,
+                    loader:false,
+                    error:true,
                 }
             })
             .addCase(fetchAllMeasurements.pending, (state, action) => {

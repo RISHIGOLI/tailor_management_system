@@ -62,7 +62,7 @@ function MeasurementTab() {
     }, [])
 
     function extractMeasurementDescription(values, targetFieldName) {
-        const field = values.find(value => value.fieldName === targetFieldName)
+        const field = values?.find(value => value?.fieldName === targetFieldName)
         return field ? field.fieldValue : 'Not Available'
     }
 
