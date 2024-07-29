@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { addMeasurementAPI, fetchAllMeasurementsAPI, fetchMeasurementFieldsByTypeAPI } from './MeasurementsApi'
+import { addMeasurementAPI, fetchAllMeasurementsAPI, fetchMeasurementByCustomerAPI, fetchMeasurementFieldsByTypeAPI } from './MeasurementsApi'
 
 const MeasurementsSlice = createSlice({
     name: 'measurementsSlice',
@@ -70,6 +70,25 @@ const MeasurementsSlice = createSlice({
                     ...state
                 }
             })
+            .addCase(fetchMeasurementsByCustomer.pending, (state, action) => {
+                console.log('payload for pending state', action.payload);
+                return {
+                    ...state
+                }
+            })
+            .addCase(fetchMeasurementsByCustomer.fulfilled, (state, action) => {
+                console.log('payload for fulfilled state', action.payload);
+                return {
+                    ...state,
+                    measurements: [...action.payload.data]
+                }
+            })
+            .addCase(fetchMeasurementsByCustomer.rejected, (state, action) => {
+                console.log('payload for rejected state', action.payload);
+                return {
+                    ...state
+                }
+            })
     }
 })
 
@@ -105,6 +124,18 @@ export const fetchAllMeasurements = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const response = await fetchAllMeasurementsAPI()
+            return response.data
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const fetchMeasurementsByCustomer = createAsyncThunk(
+    'measurements/fetchMeasurementsByCustomer',
+    async ({ customerId }, thunkAPI) => {
+        try {
+            const response = await fetchMeasurementByCustomerAPI(customerId)
             return response.data
         } catch (error) {
             return thunkAPI.rejectWithValue(error)

@@ -146,7 +146,7 @@ function AddMeasurements({ open, onClose }) {
                     <Divider />
                     {/* content container */}
                     <Grid style={{ height: 'calc(100% - 50px)', width: '100%', backgroundColor: 'white', paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', paddingBottom: '0.5rem' }}>
-                        <Grid container spacing={1}>
+                        <Grid container spacing={0}>
                             <Grid item xs={12} spacing={1}>
                                 <Box style={{ margin: '5px 10px', fontWeight: 'bold' }}>Customer Details :</Box>
                             </Grid>

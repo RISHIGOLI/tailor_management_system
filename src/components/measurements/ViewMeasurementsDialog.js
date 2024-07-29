@@ -1,4 +1,4 @@
-import { Dialog, Grid, Divider, Box, Button, TextField, Autocomplete } from '@mui/material'
+import { Dialog, Grid, Divider, Box, Button, TextField, Autocomplete, IconButton } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import CloseIcon from '@mui/icons-material/Close'
 import { useState, useEffect } from 'react'
@@ -71,7 +71,7 @@ function ViewMeasurementsDialog({ open, onClose, measurementId }) {
                             </Grid>
                         </Grid>
                         <Grid>
-                            <Box onClick={() => onClose()}><Button><CloseIcon style={{ fontSize: '30px', marginTop: '5px', cursor: 'pointer' }} /></Button></Box>
+                            <Box onClick={() => onClose()}><IconButton style={{height:'2rem', width:'2rem'}}><CloseIcon style={{ fontSize: '30px', cursor: 'pointer' }} /></IconButton></Box>
                         </Grid>
                     </Grid>
                     <Divider />

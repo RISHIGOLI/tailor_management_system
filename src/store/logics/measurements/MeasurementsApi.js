@@ -12,3 +12,7 @@ export function addMeasurementAPI(body) {
 export function fetchAllMeasurementsAPI() {
     return instance.get('/api/measurement')
 }
+
+export function fetchMeasurementByCustomerAPI(customerId){
+    return instance.get(`/api/measurement/${customerId}`)
+}
