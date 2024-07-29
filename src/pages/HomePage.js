@@ -60,13 +60,13 @@ export default function HomePage() {
                                     // onKeyDown={toggleDrawer}
                                     >
                                         <List>
-                                            <ListItem button onClick={() => { navigate('/item1'); setSelectedTab('/item1') }} style={{ backgroundColor: selectedTab === '/item1' && 'gray', color: selectedTab === '/item1' && 'white' }}>
+                                            <ListItem onClick={() => { navigate('/item1'); setSelectedTab('/item1') }} style={{ backgroundColor: selectedTab === '/item1' && 'gray', color: selectedTab === '/item1' && 'white', cursor: 'pointer' }}>
                                                 <ListItemText primary="Dashboard" />
                                             </ListItem>
-                                            <ListItem button onClick={() => { navigate('/customers'); setSelectedTab('/customers') }} style={{ backgroundColor: selectedTab === '/customers' && 'gray', color: selectedTab === '/customers' && 'white' }}>
+                                            <ListItem onClick={() => { navigate('/customers'); setSelectedTab('/customers') }} style={{ backgroundColor: selectedTab === '/customers' && 'gray', color: selectedTab === '/customers' && 'white', cursor: 'pointer' }}>
                                                 <ListItemText primary="Customers" />
                                             </ListItem>
-                                            <ListItem button onClick={() => { navigate('/measurements'); setSelectedTab('/measurements') }} style={{ backgroundColor: selectedTab === '/measurements' && 'gray', color: selectedTab === '/measurements' && 'white' }}>
+                                            <ListItem onClick={() => { navigate('/measurements'); setSelectedTab('/measurements') }} style={{ backgroundColor: selectedTab === '/measurements' && 'gray', color: selectedTab === '/measurements' && 'white', cursor: 'pointer' }}>
                                                 <ListItemText primary="Measurements" />
                                             </ListItem>
                                         </List>

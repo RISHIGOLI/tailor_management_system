@@ -77,7 +77,7 @@ function AddMeasurements({ open, onClose }) {
 
     const { measurementFields } = useSelector((state) => state.measurements)
     const { customers } = useSelector((state) => state.customers)
-    const {loader,status,error,message} = useSelector((state)=>state.measurements.addMeasurementStatusHandlers)
+    const { loader, status, error, message } = useSelector((state) => state.measurements.addMeasurementStatusHandlers)
 
     const handleCustomerSelect = (event, newValue) => {
         setSelectedCustomer(newValue);
@@ -241,13 +241,15 @@ function AddMeasurements({ open, onClose }) {
                                         </Grid>
                                     ))
                                 }
-                                <Grid item xs={3} justifyContent='center' margin="auto">
-                                    <Button className={classes.activeButton} sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => addMeasurementHandler()}>+Add</Button>
+                                <Grid container display="flex" justifyContent="center" alignItems="center">
+                                    <Grid item xs={3} justifyContent='center' margin="auto">
+                                        <Button className={classes.activeButton} sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => addMeasurementHandler()}>+Add</Button>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         }
 
-{
+                        {
                             loader &&
                             <Grid container spacing={0} height="100%" display="flex" justifyContent="center" alignItems="center" opacity="0.1" position="aboslute" top="0" left="0">
                                 <Grid>
