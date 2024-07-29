@@ -1,4 +1,4 @@
-import { Dialog, Grid, Divider, Box, Button, TextField } from '@mui/material'
+import { Dialog, Grid, Divider, Box, Button, TextField, IconButton } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import CloseIcon from '@mui/icons-material/Close'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,6 +19,16 @@ const useStyles = makeStyles((theme) => ({
             maxWidth: '100vw', // Example custom style
             maxHeight: '100vh'
         },
+    },
+    activeButton: {
+        backgroundColor: 'gray !important',
+        color: 'white !important',
+        margin: '5px !important',
+        '&:hover': {
+            backgroundColor: 'gray !important',
+            color: 'white !important',
+        },
+        textTransform: 'none !important'
     }
 }))
 
@@ -28,7 +38,7 @@ function AddCustomer({ open, onClose }) {
     const [body, setBody] = useState({
         customerName: '',
         customerAddress: '',
-        customerMobileNo : '',
+        customerMobileNo: '',
         referredBy: ''
     })
     const textFields = [{
@@ -49,16 +59,16 @@ function AddCustomer({ open, onClose }) {
     }
     ]
 
-    function handleInputChange(e){
-        setBody({...body, [e.target.name] : e.target.value})
+    function handleInputChange(e) {
+        setBody({ ...body, [e.target.name]: e.target.value })
     }
 
-    useEffect(()=>{
-        console.log('body',body);
-    },[body])
+    useEffect(() => {
+        console.log('body', body);
+    }, [body])
 
-    function handleAddCustomer(){
-        dispatch(addCustomer({body}))
+    function handleAddCustomer() {
+        dispatch(addCustomer({ body }))
     }
 
     return (
@@ -75,12 +85,12 @@ function AddCustomer({ open, onClose }) {
                             <Box style={{ fontSize: '20px', fontWeight: 'bold' }}>Add Customer</Box>
                         </Grid>
                         <Grid>
-                            <Box onClick={() => onClose()}><Button><CloseIcon style={{ fontSize: '30px', marginTop: '5px', cursor: 'pointer' }} /></Button></Box>
+                            <Box onClick={() => onClose()}><IconButton><CloseIcon style={{ fontSize: '30px', cursor: 'pointer' }} /></IconButton></Box>
                         </Grid>
                     </Grid>
                     <Divider />
                     {/* content container */}
-                    <Grid style={{ height: 'calc(100% - 50px)', width: '100%', backgroundColor: 'pink', paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', paddingBottom: '0.5rem' }}>
+                    <Grid style={{ height: 'calc(100% - 50px)', width: '100%', backgroundColor: 'white', paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', paddingBottom: '0.5rem' }}>
                         <Grid container spacing={1}>
                             {
                                 textFields.map((textField, index) => (
@@ -100,7 +110,7 @@ function AddCustomer({ open, onClose }) {
                                 ))
                             }
                             <Grid item xs={12} container justifyContent='center'>
-                                <Button sx={{ border: '1px solid black' }} onClick={() => handleAddCustomer()}>+Add</Button>
+                                <Button className={classes.activeButton} sx={{ border: '1px solid black' }} onClick={() => handleAddCustomer()}>+Add</Button>
                             </Grid>
                         </Grid>
                     </Grid>

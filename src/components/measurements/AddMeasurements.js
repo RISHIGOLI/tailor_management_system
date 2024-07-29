@@ -1,4 +1,4 @@
-import { Dialog, Grid, Divider, Box, Button, TextField, Autocomplete } from '@mui/material'
+import { Dialog, Grid, Divider, Box, Button, TextField, Autocomplete, IconButton } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import CloseIcon from '@mui/icons-material/Close'
 import { useState, useEffect } from 'react'
@@ -32,11 +32,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     activeButton: {
-        backgroundColor: 'rgb(127, 12, 134) !important',
+        backgroundColor: 'gray !important',
         color: 'white !important',
         margin: '5px !important',
         '&:hover': {
-            backgroundColor: 'rgb(127, 12, 134) !important',
+            backgroundColor: 'gray !important',
             color: 'white !important',
         },
         textTransform: 'none !important'
@@ -140,7 +140,7 @@ function AddMeasurements({ open, onClose }) {
                             <Box style={{ fontSize: '20px', fontWeight: 'bold' }}>Add Measurements</Box>
                         </Grid>
                         <Grid>
-                            <Box onClick={() => onClose()}><Button><CloseIcon style={{ fontSize: '30px', marginTop: '5px', cursor: 'pointer' }} /></Button></Box>
+                            <Box onClick={() => onClose()}><IconButton><CloseIcon style={{ fontSize: '30px', cursor: 'pointer' }} /></IconButton></Box>
                         </Grid>
                     </Grid>
                     <Divider />
@@ -236,7 +236,7 @@ function AddMeasurements({ open, onClose }) {
                                 ))
                             }
                             <Grid item xs={3} justifyContent='center' margin="auto">
-                                <Button sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => addMeasurementHandler()}>+Add</Button>
+                                <Button className={classes.activeButton} sx={{ border: '1px solid black', fontWeight: 'bold', width: '90%' }} onClick={() => addMeasurementHandler()}>+Add</Button>
                             </Grid>
                         </Grid>
 

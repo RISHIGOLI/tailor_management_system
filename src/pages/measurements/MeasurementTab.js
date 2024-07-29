@@ -32,6 +32,16 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         borderRight: '1px solid lightgrey'
+    },
+    activeButton: {
+        backgroundColor: 'gray !important',
+        color: 'white !important',
+        margin: '5px !important',
+        '&:hover': {
+            backgroundColor: 'gray !important',
+            color: 'white !important',
+        },
+        textTransform: 'none !important'
     }
 }))
 
@@ -96,19 +106,19 @@ function MeasurementTab() {
                             </Grid>
                         </Grid>
                     }
-                    <Grid><Button sx={{ border: '1px solid black' }} onClick={() => setOpenAddMeasurementsDialog(true)}>Add Measurements</Button></Grid>
+                    <Grid><Button className={classes.activeButton} sx={{ border: '1px solid black' }} onClick={() => setOpenAddMeasurementsDialog(true)}>Add Measurements</Button></Grid>
                 </Grid>
 
                 {/* customer table container*/}
-                <Grid style={{ width: '100%', height: 'calc(100% - 4.5rem)', backgroundColor: 'pink', display: 'flex', flexDirection: 'column' }}>
-                    <Grid style={{ backgroundColor: 'rgb(127, 12, 134)', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', marginRight: '4px' }}>
+                <Grid style={{ width: '100%', height: 'calc(100% - 4.5rem)', backgroundColor: 'white', display: 'flex', flexDirection: 'column',padding: '0rem 0.25rem' }}>
+                    <Grid style={{ backgroundColor: 'gray', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky',paddingRight: '4px'}}>
                         <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
                         <Box style={{ width: '20%' }} className={classes.column}>Customer Name</Box>
                         <Box style={{ width: '15%' }} className={classes.column}>Cloth Type</Box>
                         <Box style={{ width: '30%' }} className={classes.column}>Description</Box>
                         <Box style={{ width: '35%', border: 'none' }} className={classes.column}>Actions</Box>
                     </Grid>
-                    <Grid style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+                    <Grid style={{ height: '100%', width: '100%', overflowY: 'auto', border: '1px solid gray', borderBottom: '1px solid gray' }}>
                         {
                             measurements.map((measurement, index) => (
                                 <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={measurement.id}>
@@ -117,9 +127,9 @@ function MeasurementTab() {
                                     <Box style={{ width: '15%' }} className={classes.recordColumn}>{measurement?.type.typeName}</Box>
                                     <Box style={{ width: '30%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>{extractMeasurementDescription(measurement.values, 'Measurement Description')}</Box>
                                     <Box style={{ width: '35%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
-                                        <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { setOpenViewMeasurementsDialog(true); setMeasuremenId(measurement.id) }}>View</Button>
-                                        <Button style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
-                                        <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { }}>Delete</Button>
+                                        <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { setOpenViewMeasurementsDialog(true); setMeasuremenId(measurement.id) }}>View</Button>
+                                        <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
+                                        <Button className={classes.activeButton} style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => { }}>Delete</Button>
                                     </Box>
                                 </Grid>
                             ))

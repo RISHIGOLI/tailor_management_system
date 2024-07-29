@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Header from '../components/root/Header'
 import { makeStyles } from '@mui/styles'
 import Routers from '../components/root/Routers'
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import VisitPage from './VisitPage'
 
 const useStyles = makeStyles((theme) => ({
@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function HomePage() {
+    const location = useLocation()
+    console.log('location', location.pathname);
+    const [selectedTab, setSelectedTab] = useState(location.pathname)
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [showHomePage, setShowHomePage] = useState(true)
     const navigate = useNavigate()
@@ -44,7 +47,7 @@ export default function HomePage() {
                                     transitionDuration={300}
                                     sx={{
                                         '& .MuiPaper-root': {
-                                            backgroundColor: 'pink',
+                                            backgroundColor: 'white',
                                             top: '4.5rem',
                                             height: `calc(100% - 4.5rem)`
                                         }
@@ -57,13 +60,13 @@ export default function HomePage() {
                                     // onKeyDown={toggleDrawer}
                                     >
                                         <List>
-                                            <ListItem button onClick={() => navigate('/item1')}>
+                                            <ListItem button onClick={() => { navigate('/item1'); setSelectedTab('/item1') }} style={{ backgroundColor: selectedTab === '/item1' && 'gray', color: selectedTab === '/item1' && 'white' }}>
                                                 <ListItemText primary="Dashboard" />
                                             </ListItem>
-                                            <ListItem button onClick={() => navigate('/customers')}>
+                                            <ListItem button onClick={() => { navigate('/customers'); setSelectedTab('/customers') }} style={{ backgroundColor: selectedTab === '/customers' && 'gray', color: selectedTab === '/customers' && 'white' }}>
                                                 <ListItemText primary="Customers" />
                                             </ListItem>
-                                            <ListItem button onClick={() => navigate('/measurements')}>
+                                            <ListItem button onClick={() => { navigate('/measurements'); setSelectedTab('/measurements') }} style={{ backgroundColor: selectedTab === '/measurements' && 'gray', color: selectedTab === '/measurements' && 'white' }}>
                                                 <ListItemText primary="Measurements" />
                                             </ListItem>
                                         </List>
@@ -72,7 +75,7 @@ export default function HomePage() {
 
                                 {/* content container */}
                                 <Grid style={{
-                                    flex: 1, backgroundColor: 'red', padding: '0.1rem', marginLeft: drawerOpen ? 250 : 0, transition: 'margin 0.3s',
+                                    flex: 1, backgroundColor: '#f2f2f2', padding: '0.5rem', marginLeft: drawerOpen ? 250 : 0, transition: 'margin 0.3s',
                                 }}>
                                     {/* Your content goes here */}
                                     <Grid style={{ height: '100%', width: '100%' }}>

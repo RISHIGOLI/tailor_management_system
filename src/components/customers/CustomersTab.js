@@ -32,6 +32,16 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         borderRight: '1px solid lightgrey'
+    },
+    activeButton: {
+        backgroundColor: 'gray !important',
+        color: 'white !important',
+        margin: '5px !important',
+        '&:hover': {
+            backgroundColor: 'gray !important',
+            color: 'white !important',
+        },
+        textTransform: 'none !important'
     }
 }))
 
@@ -64,12 +74,12 @@ export default function CustomersTab() {
                     <Grid container style={{ height: '100%', width: 'auto', backgroundColor: 'blue', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column' }}>
                         <Grid style={{ width: '100%', height: '4rem', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Grid></Grid>
-                            <Grid><Button sx={{ border: '1px solid black' }} onClick={() => setOpenAddCustomerForm(true)}>Add Customer</Button></Grid>
+                            <Grid><Button className={classes.activeButton} sx={{ border: '1px solid black' }} onClick={() => setOpenAddCustomerForm(true)}>Add Customer</Button></Grid>
                         </Grid>
 
                         {/* customer table container*/}
-                        <Grid style={{ width: '100%', height: 'calc(100% - 4rem)', backgroundColor: 'pink', display: 'flex', flexDirection: 'column' }}>
-                            <Grid style={{ backgroundColor: 'rgb(127, 12, 134)', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', marginRight: '4px' }}>
+                        <Grid style={{ width: '100%', height: 'calc(100% - 4rem)', backgroundColor: 'white', display: 'flex', flexDirection: 'column', padding: '0rem 0.25rem' }}>
+                            <Grid style={{ backgroundColor: 'gray', display: 'flex', alignItems: 'center', padding: '15px 0px', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px', position: 'sticky', paddingRight: '4px' }}>
                                 <Box style={{ width: '5%' }} className={classes.column}>Sr No</Box>
                                 <Box style={{ width: '10%' }} className={classes.column}>Name</Box>
                                 <Box style={{ width: '20%' }} className={classes.column}>Address</Box>
@@ -78,7 +88,7 @@ export default function CustomersTab() {
                                 <Box style={{ width: '10%' }} className={classes.column}>Orders</Box>
                                 <Box style={{ width: '25%', border: 'none' }} className={classes.column}>Actions</Box>
                             </Grid>
-                            <Grid style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+                            <Grid style={{ height: '100%', width: '100%', overflowY: 'auto', border: '1px solid gray' }}>
                                 {
                                     customers.map((customer, index) => (
                                         <Grid style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0px', borderBottom: '1px solid lightgrey', height: '4rem', overflow: 'hidden' }} key={index}>
@@ -89,9 +99,9 @@ export default function CustomersTab() {
                                             <Box style={{ width: '20%' }} className={classes.recordColumn}>{customer.referredBy}</Box>
                                             <Box style={{ width: '10%', overflowY: 'auto', cursor: 'pointer' }} className={classes.recordColumn}>Orders</Box>
                                             <Box style={{ width: '25%', display: 'flex', justifyContent: 'space-evenly', }} className={classes.recordColumn}>
-                                                <Button style={{ textTransform: 'none', border: '1px solid black' }}>View</Button>
-                                                <Button style={{ textTransform: 'none', border: '1px solid black' }}>Edit</Button>
-                                                <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => handleOpenDeleteCustomerDialog(customer.customerId)}>Delete</Button>
+                                                <Button style={{ textTransform: 'none', border: '1px solid black' }} className={classes.activeButton}>View</Button>
+                                                <Button style={{ textTransform: 'none', border: '1px solid black' }} className={classes.activeButton}>Edit</Button>
+                                                <Button style={{ textTransform: 'none', border: '1px solid black' }} onClick={() => handleOpenDeleteCustomerDialog(customer.customerId)} className={classes.activeButton}>Delete</Button>
                                             </Box>
                                         </Grid>
                                     ))
